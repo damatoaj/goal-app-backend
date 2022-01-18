@@ -22,6 +22,10 @@ app.use('/outcomes', outcomesRouter);
 app.use('/', perfRouter);
 app.use('/', proRouter);
 
+app.get('/', (req, res)=> {
+    res.send('Welcome to the goal app')
+})
+
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Connected to port ${process.env.PORT || 3000}`)
 });
