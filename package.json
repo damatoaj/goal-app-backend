@@ -1,0 +1,21 @@
+{
+  "name": "goal_app",
+  "version": "1.0.0",
+  "description": "An app for users to create outcome, performance, and process goals",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur D'Amato",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.5",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0"
+  }
+}
