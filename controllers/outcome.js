@@ -21,8 +21,6 @@ const show = async (req, res) => {
 };
 
 const createOutcome = async (req, res) => {
-    console.log(req.body)
-    
     const outcome = new Outcome({
         description:req.body.description,
         dateDue:req.body.dateDue,
@@ -36,7 +34,6 @@ const createOutcome = async (req, res) => {
         console.log(user)
         await outcome.save()
         if(!user) return res.status(404).send();
-        // await outcome.save();
         user.outcomeGoals.push(outcome)
         user.save();
         res.status(201).send(outcome);
