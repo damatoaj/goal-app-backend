@@ -31,7 +31,6 @@ const createOutcome = async (req, res) => {
     });
     try {
         const user = await User.findById(req.body.userId);
-        console.log(user)
         await outcome.save()
         if(!user) return res.status(404).send();
         user.outcomeGoals.push(outcome)
