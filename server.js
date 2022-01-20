@@ -2,6 +2,8 @@ require('dotenv').config();
 require('./config/database');
 const cors = require('cors');
 const express = require('express');
+const server = require('http').createServer();
+const port =  3000;
 
 //load in the routes
 const authRouter = require('./routes/auth');
@@ -26,6 +28,6 @@ app.get('/', (req, res)=> {
     res.send('Welcome to the goal app')
 })
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Connected to port ${process.env.PORT || 3000}`)
+app.listen(port, () => {
+    console.log(`Connected to ${port}`)
 });

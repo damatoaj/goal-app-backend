@@ -1,8 +1,10 @@
 const Outcome = require('../models/outcome');
+const User = require('../models/user');
 
 const index = async (req,res) => {
+    console.log(req.query)
     try {
-        const outcomes = await Outcome.find({});
+        const outcomes = await Outcome.find({userId:req.query.id});
         res.send(outcomes);
     } catch(e) {
         res.status(500).send();
@@ -20,10 +22,25 @@ const show = async (req, res) => {
 };
 
 const createOutcome = async (req, res) => {
-    const outcome = new Outcome(req.body);
+    console.log(req.body)
+    
+    const outcome = new Outcome({
+        description:req.body.description,
+        dateDue:req.body.dateDue,
+        complete:req.body.complete,
+        reward:req.body.reward,
+        punishment:req.body.punishment,
+        userId:req.body.userId
+    });
     try {
-        await outcome.save();
-        res.status(201).send(outcome);
+        const user = await User.findById(req.body.userId);
+        console.log(user)
+        await outcome.save()
+        if(!user) return res.status(404).send();
+        // await outcome.save();
+        user.outcomeGoals.push(outcome)
+        user.save();
+        res.status(201).send(user);
     } catch (e) {
         res.status(400).send(e);
     };

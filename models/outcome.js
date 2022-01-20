@@ -85,6 +85,9 @@ const outcomeSchema = new mongoose.Schema({
     },
     performanceGoals: {
         type: [performanceSchema]
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }
 })
 

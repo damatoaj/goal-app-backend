@@ -27,9 +27,7 @@ const options = {
       type: String,
       required: true
     },
-    outcomeGoals: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'OutcomeGoals'
-    }
+    outcomeGoals: [{type: mongoose.Schema.Types.ObjectId, ref: 'OutcomeGoals'}]
   }, options);
   
   module.exports = mongoose.model('User', userSchema);
