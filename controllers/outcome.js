@@ -2,7 +2,6 @@ const Outcome = require('../models/outcome');
 const User = require('../models/user');
 
 const index = async (req,res) => {
-    console.log(req.query)
     try {
         const outcomes = await Outcome.find({userId:req.query.id});
         res.send(outcomes);
@@ -40,7 +39,7 @@ const createOutcome = async (req, res) => {
         // await outcome.save();
         user.outcomeGoals.push(outcome)
         user.save();
-        res.status(201).send(user);
+        res.status(201).send(outcome);
     } catch (e) {
         res.status(400).send(e);
     };
