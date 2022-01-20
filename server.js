@@ -3,7 +3,7 @@ require('./config/database');
 const cors = require('cors');
 const express = require('express');
 const server = require('http').createServer();
-const port =  3000;
+const port =  process.env.PORT || 3000;
 
 //load in the routes
 const authRouter = require('./routes/auth');
