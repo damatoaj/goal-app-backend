@@ -1,7 +1,5 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
 const { createUserToken } = require('../middleware/auth');
 
 const signup = async (req, res) => {
@@ -16,7 +14,7 @@ const signup = async (req, res) => {
         user.save();
        res.status(201).send({token, user});
     } catch(e) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
 
@@ -27,7 +25,7 @@ const login = async (req, res) => {
         const token = await createUserToken(req, user);
         res.status(201).send({token, user});
     } catch(e) {
-        res.status(400).send();
+        res.status(400).send(e);
     }
 };
 
@@ -39,16 +37,17 @@ const update = async (req, res) => {
         await user.save();
         res.status(201).send(user);
     } catch(e) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
 
 const deleteUser = async (req, res) => {
     try{
-        const user = await User.findByIdAndDelete(req.user._id); 
-        res.send(user);
+        const user = await User.findByIdAndDelete(req.user._id);
+
+        res.status(200).send(user);
     }catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
     }
 };
 

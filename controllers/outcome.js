@@ -4,19 +4,21 @@ const User = require('../models/user');
 const index = async (req,res) => {
     try {
         const outcomes = await Outcome.find({userId:req.query.id});
-        res.send(outcomes);
+        if(!outcomes) res.status(404).send('Error finding outcome goals');
+
+        res.status(200).send(outcomes);
     } catch(e) {
-        res.status(500).send();
+        res.status(500).send(e);
     };
 };
 
 const show = async (req, res) => {
     try {
         const outcome = await Outcome.findById(req.params.id);
-        if(!outcome) res.status(404).send();
-        res.send(outcome);
+        if(!outcome) res.status(404).send('Error finding outcome goal');
+        res.status(200).send(outcome);
     } catch(e) {
-        res.status(500).send();
+        res.status(500).send(e);
     };
 };
 
@@ -32,7 +34,7 @@ const createOutcome = async (req, res) => {
     try {
         const user = await User.findById(req.body.userId);
         await outcome.save()
-        if(!user) return res.status(404).send();
+        if(!user) return res.status(404).send('Error finding user');
         user.outcomeGoals.push(outcome)
         user.save();
         res.status(201).send(outcome);
@@ -45,12 +47,12 @@ const updateOutcome = async (req, res) => {
     const updates = Object.keys(req.body);
     try {
         const outcome = await Outcome.findById(req.params.id);
-        if(!outcome) return res.status(404).send();
+        if(!outcome) return res.status(404).send('Error finding user');
         updates.forEach((update)=> outcome[update] = req.body[update]);
         await outcome.save();
-        res.send(outcome);
+        res.status(200).send(outcome);
     } catch (e) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
 
@@ -58,9 +60,9 @@ const deleteOutcome = async (req, res) => {
     try {
         const outcome = await Outcome.findByIdAndDelete(req.params.id);
         if(!outcome) res.status(404).send();
-        res.send(outcome);
+        res.status(200).send(outcome);
     } catch (e) {
-        res.status(500).send();
+        res.status(500).send(e);
     };
 };
 

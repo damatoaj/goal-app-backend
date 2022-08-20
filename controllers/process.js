@@ -12,7 +12,7 @@ const create = async(req, res) => {
         outcome.save();
         res.status(201).send(outcome);
     } catch(e) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
 
@@ -25,7 +25,7 @@ const update = async (req, res) => {
     const updates = Object.keys(req.body);
     try {
         const outcome = await Outcome.findOne({"performanceGoals.processGoals._id":req.params.id})
-        if (!outcome) return res.status(404).send();
+        if (!outcome) return res.status(404).send('Error finding outcome goal');
         const performanceGoal = outcome.performanceGoals.filter(performance => {
             return performance.processGoals.find(process => {
                 return process._id.toString() === req.params.id;
@@ -37,9 +37,9 @@ const update = async (req, res) => {
             }
         });
         outcome.save();
-        res.send(outcome);
+        res.status(200).send(outcome);
     } catch (e) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
 
@@ -59,9 +59,9 @@ const deletePro = async (req, res) => {
             }
         });
         await outcome.save();
-        res.send(outcome);
+        res.status(200).send(outcome);
     } catch (e) {
-        res.status(500).send();
+        res.status(500).send(e);
     }
 };
 
