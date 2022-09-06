@@ -4,28 +4,34 @@ const { createUserToken } = require('../middleware/auth');
 
 const signup = async (req, res) => {
     try{
+        console.log(req.body, "<---- the bod")
         const hash = await bcrypt.hash(req.body.password, 10);
         const user = await new User({
             name: req.body.name,
             email: req.body.email,
             password: hash,
         });
+
+        if (!user) return res.status(409).send('User exists already')
         const token = await createUserToken(req, user);
         user.save();
-       res.status(201).send({token, user});
+        res.status(201).send({token, user});
     } catch(e) {
-        res.status(500).send(e);
+        res.status(e.statusCode).send('Signup Unsuccessful');
     }
 };
 
 const login = async (req, res) => {
     try{
         const user = await User.findOne({email: req.body.email});
-        if(!user) return res.status(404).send("Try another email");
+        if(!user) {
+            return res.status(404).send("Try another email");
+        }
         const token = await createUserToken(req, user);
         res.status(201).send({token, user});
     } catch(e) {
-        res.status(400).send(e);
+        console.error(e, "<<< e")
+        res.status(e.statusCode).send('Invalid Credentials');
     }
 };
 

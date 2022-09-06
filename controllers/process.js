@@ -7,7 +7,7 @@ const create = async(req, res) => {
         const outcome = await Outcome.findById(req.params.o_id);
         if(!outcome) res.status(404).send();
         const performance = await outcome.performanceGoals.find(goal => goal._id.toString() == req.params.p_id);
-        if(!performance) res.status(404).send9();
+        if(!performance) return res.status(404).send9();
         performance.processGoals.push(req.body);
         outcome.save();
         res.status(201).send(outcome);

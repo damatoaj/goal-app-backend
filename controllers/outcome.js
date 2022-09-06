@@ -4,7 +4,7 @@ const User = require('../models/user');
 const index = async (req,res) => {
     try {
         const outcomes = await Outcome.find({userId:req.query.id});
-        if(!outcomes) res.status(404).send('Error finding outcome goals');
+        if(!outcomes) return res.status(404).send('Error finding outcome goals');
 
         res.status(200).send(outcomes);
     } catch(e) {
@@ -15,7 +15,7 @@ const index = async (req,res) => {
 const show = async (req, res) => {
     try {
         const outcome = await Outcome.findById(req.params.id);
-        if(!outcome) res.status(404).send('Error finding outcome goal');
+        if(!outcome) return res.status(404).send('Error finding outcome goal');
         res.status(200).send(outcome);
     } catch(e) {
         res.status(500).send(e);
@@ -59,7 +59,9 @@ const updateOutcome = async (req, res) => {
 const deleteOutcome = async (req, res) => {
     try {
         const outcome = await Outcome.findByIdAndDelete(req.params.id);
-        if(!outcome) res.status(404).send();
+        if(!outcome) {
+            return res.status(404).send();
+        }
         res.status(200).send(outcome);
     } catch (e) {
         res.status(500).send(e);

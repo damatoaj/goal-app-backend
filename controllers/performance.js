@@ -6,7 +6,7 @@ const create = async (req, res) => {
     console.log(req.body.improveBy.number, req.body.improveBy.unit)
     try {
         const outcome = await Outcome.findById(req.params.id);
-        if(!outcome) res.status(404).send('Error finding outcome goal');
+        if(!outcome) return res.status(404).send('Error finding outcome goal');
         outcome.performanceGoals.push({
             description:req.body.description,
             dueDate:req.body.dueDate,
