@@ -5,13 +5,14 @@ const Outcome = require('../models/outcome');
 const create = async(req, res) => {
     try {
         const outcome = await Outcome.findById(req.params.o_id);
-        if(!outcome) res.status(404).send();
+        if(!outcome) res.status(404).send({message: 'Could not find outcome goal'});
         const performance = await outcome.performanceGoals.find(goal => goal._id.toString() == req.params.p_id);
-        if(!performance) return res.status(404).send9();
+        if(!performance) return res.status(404).send({message: 'Could not find performance goal'});
         performance.processGoals.push(req.body);
         outcome.save();
         res.status(201).send(outcome);
     } catch(e) {
+        console.error('ERROR in create process goal: ', e)
         res.status(500).send(e);
     }
 };

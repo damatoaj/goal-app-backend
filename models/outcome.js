@@ -34,7 +34,7 @@ const processSchema = new mongoose.Schema({
 })
 //create relation between outcome and performance
 const performanceSchema = new mongoose.Schema({
-    dueDate: {
+    dateDue: {
         type: Date,
         required: true
     },

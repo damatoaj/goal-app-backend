@@ -2,14 +2,12 @@
 const Outcome = require('../models/outcome');
 //define the functions
 const create = async (req, res) => {
-    console.log(req.body, 'the body')
-    console.log(req.body.improveBy.number, req.body.improveBy.unit)
     try {
         const outcome = await Outcome.findById(req.params.id);
         if(!outcome) return res.status(404).send('Error finding outcome goal');
         outcome.performanceGoals.push({
             description:req.body.description,
-            dueDate:req.body.dueDate,
+            dateDue:req.body.dateDue,
             reward:req.body.reward,
             punishment:req.body.punishment,
             improveBy: {unit:req.body.improveBy.unit, number:req.body.improveBy.number},
@@ -19,6 +17,7 @@ const create = async (req, res) => {
         outcome.save();
         res.status(201).send(outcome);
     } catch(e) {
+        console.error('ERROR in create function: ', e)
         res.status(500).send(e);
     }
 };
@@ -30,6 +29,7 @@ const edit = (req,res) => {
 
 const update = async (req, res) => {
     const updates = Object.keys(req.body);
+    console.log(req.body, updates, "<_-- ")
     try {
         const object = await Outcome.findOne({"performanceGoals._id" : req.params.id});
         if (!object) return res.status(404).send('Error finding outcome goal');
@@ -42,6 +42,7 @@ const update = async (req, res) => {
         object.save();
         res.status(200).send(object);
     } catch (e) {
+        console.error('ERROR in update function: ', e)
         res.status(500).send(e);
     }
 };
@@ -49,6 +50,7 @@ const update = async (req, res) => {
 const deletePerf = async (req, res) => {
     try {
         const outcome = await Outcome.findOne({"performanceGoals._id":req.params.id});
+        console.log('outcome to delete: ', outcome)
         if(!outcome) return res.status(404).send('Error finding performance goal');
         const performanceGoal = await outcome.performanceGoals.find(performance => {
             return performance._id.toString() === req.params.id
@@ -58,6 +60,7 @@ const deletePerf = async (req, res) => {
         outcome.save();
         res.status(200).send(outcome);
     } catch (e) {
+        console.error('ERROR in delete function: ', e)
         res.status(500).send(e);
     }
 };

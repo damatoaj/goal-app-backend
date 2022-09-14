@@ -13,9 +13,11 @@ const index = async (req,res) => {
 };
 
 const show = async (req, res) => {
+    console.log('req', req.params)
     try {
         const outcome = await Outcome.findById(req.params.id);
         if(!outcome) return res.status(404).send('Error finding outcome goal');
+        console.log(outcome,'<--- outcome')
         res.status(200).send(outcome);
     } catch(e) {
         res.status(500).send(e);
@@ -59,10 +61,11 @@ const updateOutcome = async (req, res) => {
 const deleteOutcome = async (req, res) => {
     try {
         const outcome = await Outcome.findByIdAndDelete(req.params.id);
+        
         if(!outcome) {
             return res.status(404).send();
         }
-        res.status(200).send(outcome);
+        res.status(200).send();
     } catch (e) {
         res.status(500).send(e);
     };
