@@ -1,10 +1,10 @@
-const Outcome = require('../models/outcome');
+const { Outcome }= require('../models/outcome');
 const User = require('../models/user');
 
 const index = async (req,res) => {
     try {
         const outcomes = await Outcome.find({userId:req.query.id});
-        if(!outcomes) return res.status(404).send('Error finding outcome goals');
+        if(!outcomes) return res.status(404).send({message: 'Error finding outcome goals'});
 
         res.status(200).send(outcomes);
     } catch(e) {
@@ -13,11 +13,10 @@ const index = async (req,res) => {
 };
 
 const show = async (req, res) => {
-    console.log('req', req.params)
     try {
         const outcome = await Outcome.findById(req.params.id);
-        if(!outcome) return res.status(404).send('Error finding outcome goal');
-        console.log(outcome,'<--- outcome')
+        if(!outcome) return res.status(404).send({message: 'Error finding outcome goal'});
+
         res.status(200).send(outcome);
     } catch(e) {
         res.status(500).send(e);
@@ -36,7 +35,7 @@ const createOutcome = async (req, res) => {
     try {
         const user = await User.findById(req.body.userId);
         await outcome.save()
-        if(!user) return res.status(404).send('Error finding user');
+        if(!user) return res.status(404).send({message: 'Error finding user'});
         user.outcomeGoals.push(outcome)
         user.save();
         res.status(201).send(outcome);
@@ -49,7 +48,7 @@ const updateOutcome = async (req, res) => {
     const updates = Object.keys(req.body);
     try {
         const outcome = await Outcome.findById(req.params.id);
-        if(!outcome) return res.status(404).send('Error finding user');
+        if(!outcome) return res.status(404).send({message: 'Error finding user'});
         updates.forEach((update)=> outcome[update] = req.body[update]);
         await outcome.save();
         res.status(200).send(outcome);
@@ -63,11 +62,11 @@ const deleteOutcome = async (req, res) => {
         const outcome = await Outcome.findByIdAndDelete(req.params.id);
         
         if(!outcome) {
-            return res.status(404).send();
+            return res.status(404).send({message: 'Could not find outcome goal'});
         }
         res.status(200).send();
     } catch (e) {
-        res.status(500).send(e);
+        res.status(500).send({message: 'Error in delete outcome goal', e});
     };
 };
 

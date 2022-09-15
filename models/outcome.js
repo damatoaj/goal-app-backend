@@ -90,5 +90,12 @@ const outcomeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }
 })
+const Outcome = mongoose.model('Outcome', outcomeSchema);
+const Performance = mongoose.model('Performance', performanceSchema);
+const Process = mongoose.model('Process', processSchema);
 
-module.exports=mongoose.model('Outcome', outcomeSchema);
+module.exports= {
+    Outcome,
+    Performance,
+    Process
+};

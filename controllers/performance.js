@@ -1,5 +1,6 @@
 //load in the dependency
-const Outcome = require('../models/outcome');
+const { Outcome, Performance }  = require('../models/outcome');
+
 //define the functions
 const create = async (req, res) => {
     try {
@@ -27,9 +28,24 @@ const edit = (req,res) => {
     res.send('edit performance goal')
 };
 
+const findOne = async (req, res) => {
+    const { oid, id } = req.params;
+    try {
+        const outcome = await Outcome.findById(oid);
+        if (!outcome) return res.status(404).send({message: 'Could not find performance goal'});
+        
+        const performance = outcome.performanceGoals.find(({ _id }) => _id.toString() === id)
+        if (!performance) return res.status(404).send({message: 'Could not find the performance goal'})
+        res.status(200).send(performance);
+    } catch (e) {
+        console.error('Error in the findOne function', e)
+        res.status(500).send({message: 'Could not find performance goal', e})
+    }
+};
+
 const update = async (req, res) => {
     const updates = Object.keys(req.body);
-    console.log(req.body, updates, "<_-- ")
+
     try {
         const object = await Outcome.findOne({"performanceGoals._id" : req.params.id});
         if (!object) return res.status(404).send('Error finding outcome goal');
@@ -69,5 +85,6 @@ module.exports = {
     create,
     edit,
     update,
-    delete: deletePerf
+    delete: deletePerf,
+    findOne
 };

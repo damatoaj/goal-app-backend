@@ -1,5 +1,5 @@
 //load in the dependency
-const Outcome = require('../models/outcome');
+const { Outcome }= require('../models/outcome');
 
 //define the functions
 const create = async(req, res) => {
